@@ -1,6 +1,7 @@
 #pragma once
 #include "geometry.hpp"
 #include <algorithm>
+#include <expected>
 #include <ranges>
 #include <stack>
 #include <vector>
@@ -24,7 +25,6 @@ private:
     std::vector<Point2D> s;
 };
 
-//Ваш код здесь
-std::vector<Point2D> GrahamScan(std::span<Point2D> points);
+std::expected<std::vector<Point2D>, std::string> GrahamScan(std::span<Point2D> points) noexcept;
 
 }  // namespace geometry::convex_hull

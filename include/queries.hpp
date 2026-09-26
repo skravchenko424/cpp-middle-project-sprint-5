@@ -235,38 +235,29 @@ struct ShapeToShapeDistanceVisitor {
     }
 };
 
-
 /*
-* Функции-помощники
-*/
+ * Функции-помощники
+ */
 inline double DistanceToPoint(const Shape &shape, const Point2D &point) {
-
-    /* ваш код с PointToShapeDistanceVisitor здесь*/
-    return 0.0;
+    return shape.visit(PointToShapeDistanceVisitor{point});
 }
 
 inline BoundingBox GetBoundBox(const Shape &shape) {
-
-    /* ваш код с использованием метода BoundBox() здесь */
-    return {};
+    return shape.visit([](const auto &s) { return s.BoundBox(); });
 }
 
 inline double GetHeight(const Shape &shape) {
-
-    /* ваш код с использованием метода Height() здесь */
-    return 0.0;
+    return shape.visit([](const auto &s) { return s.Height(); });
 }
 
 inline bool BoundingBoxesOverlap(const Shape &shape1, const Shape &shape2) {
-   BoundingBox bb1 = GetBoundBox(shape1);
+    BoundingBox bb1 = GetBoundBox(shape1);
     BoundingBox bb2 = GetBoundBox(shape2);
     return bb1.Overlaps(bb2);
 }
 
-std::optional<double> DistanceBetweenShapes(const Shape &shape1, const Shape &shape2) {
-
-    /* ваш код с ShapeToShapeDistanceVisitor здесь*/
-    return std::nullopt;
+inline std::optional<double> DistanceBetweenShapes(const Shape &shape1, const Shape &shape2) {
+    return std::visit(ShapeToShapeDistanceVisitor{}, shape1, shape2);
 }
 
 }  // namespace geometry::queries

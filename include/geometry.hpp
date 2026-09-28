@@ -392,3 +392,12 @@ struct std::formatter<geometry::Polygon> {
         return std::format_to(out, "]");
     }
 };
+template <>
+struct std::formatter<geometry::Shape> {
+    constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin(); }
+
+    template <typename FormatContext>
+    auto format(const geometry::Shape &s, FormatContext &ctx) const {
+        return std::visit([&](const auto &value) { return std::format_to(ctx.out(), "{}", value); }, s);
+    }
+};
